@@ -503,4 +503,4 @@ Thumbs.db
 ssl
 
 appsettings.Development.json
-bin
+Api/bin
