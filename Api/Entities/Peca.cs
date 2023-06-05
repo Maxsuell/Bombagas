@@ -1,10 +1,12 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Api.Entities
 {
     public class Peca
     {
-        public int IdPeca { get; set; }
+        public int Id { get; set; }
         public string NamePeca { get; set; }
         public float ValorUnit { get; set; }
-        public int QntEst { get; set; }
+        public string Descricao { get; set; }
     }
 }

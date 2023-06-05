@@ -3,6 +3,7 @@ using System;
 using Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace api.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230603185633_InitialCreated_V5_1")]
+    partial class InitialCreated_V5_1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
@@ -90,47 +93,17 @@ namespace api.Data.Migrations
                     b.ToTable("contatos");
                 });
 
-            modelBuilder.Entity("Api.Entities.ItemPeca", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("IdPeca")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("IdVendaPeca")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("PecaId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("PreUni")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Qnt")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdVendaPeca");
-
-                    b.HasIndex("PecaId");
-
-                    b.ToTable("itemPeca");
-                });
-
             modelBuilder.Entity("Api.Entities.Peca", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Descricao")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("NamePeca")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("QntEst")
+                        .HasColumnType("INTEGER");
 
                     b.Property<float>("ValorUnit")
                         .HasColumnType("REAL");
@@ -211,7 +184,10 @@ namespace api.Data.Migrations
                     b.Property<int>("IdCliente")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("IdItemPeca")
+                    b.Property<int>("IdPeca")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Qnt")
                         .HasColumnType("INTEGER");
 
                     b.Property<float>("ValorTotal")
@@ -220,6 +196,8 @@ namespace api.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("IdCliente");
+
+                    b.HasIndex("IdPeca");
 
                     b.ToTable("vendaPecas");
                 });
@@ -244,23 +222,6 @@ namespace api.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("ClientApp");
-                });
-
-            modelBuilder.Entity("Api.Entities.ItemPeca", b =>
-                {
-                    b.HasOne("Api.Entities.VendaPeca", "VendaPeca")
-                        .WithMany("ItemPeca")
-                        .HasForeignKey("IdVendaPeca")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Api.Entities.Peca", "Peca")
-                        .WithMany()
-                        .HasForeignKey("PecaId");
-
-                    b.Navigation("Peca");
-
-                    b.Navigation("VendaPeca");
                 });
 
             modelBuilder.Entity("Api.Entities.Servicos", b =>
@@ -290,17 +251,20 @@ namespace api.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Api.Entities.Peca", "Peca")
+                        .WithMany()
+                        .HasForeignKey("IdPeca")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Cliente");
+
+                    b.Navigation("Peca");
                 });
 
             modelBuilder.Entity("Api.Entities.ClientApp", b =>
                 {
                     b.Navigation("Contatos");
-                });
-
-            modelBuilder.Entity("Api.Entities.VendaPeca", b =>
-                {
-                    b.Navigation("ItemPeca");
                 });
 #pragma warning restore 612, 618
         }

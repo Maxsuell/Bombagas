@@ -20,9 +20,9 @@ namespace Api.Controllers
         }
 
         [HttpGet("Client/{nome}")]
-        public async Task<ClientApp> GetClient(string nome)
+        public IEnumerable<ClientDto> GetClient(string nome)
         {
-            return await _unitOfWork.clientRepository.GetClient(nome);
+            return _unitOfWork.clientRepository.GetClient(nome);
         }
 
         [HttpGet("ClientId/{id}")]
@@ -49,6 +49,15 @@ namespace Api.Controllers
                 if(await _unitOfWork.Complete()) return Ok();
             }
             
+
+            return BadRequest("Cliente não encontrado");
+        }
+
+        [HttpDelete("DeleteClient/{id}")]
+        public async Task<ActionResult> DeleteClient(int id)
+        {
+            _unitOfWork.clientRepository.DeleteClient(id);
+            if(await _unitOfWork.Complete()) return Ok();
 
             return BadRequest("Cliente não encontrado");
         }

@@ -28,9 +28,9 @@ namespace Api.Data
             return await _context.clientApps.ProjectTo<ClientDto>(_mapper.ConfigurationProvider).ToListAsync();
         }
 
-        public async Task<ClientApp> GetClient(string nameClient)
+        public IEnumerable<ClientDto> GetClient(string nameClient)
         {
-            return await _context.clientApps.SingleOrDefaultAsync(c => c.NameClient == nameClient);
+            return _context.clientApps.ProjectTo<ClientDto>(_mapper.ConfigurationProvider).Where(cl => cl.NameClient == nameClient);
         }
 
         public async Task<ClientDto> GetClientIdDto(int id)
@@ -50,6 +50,13 @@ namespace Api.Data
             return await _context.clientApps
                 .Include(c => c.Contatos)
                 .FirstOrDefaultAsync(cl => cl.Id == id);  
+        }
+
+        public void DeleteClient(int id)
+        {
+            var obj = _context.clientApps.Find(id);
+            _context.clientApps.Remove(obj);
+            
         }
         
     }

@@ -16,6 +16,10 @@ namespace Api.Data
 
         public ClientRepository clientRepository => new ClientRepository(_context, _mapper);
 
+        public VendaPecaRepository vendaPecaRepository => new VendaPecaRepository(_context,_mapper);
+
+        public PecaRepository pecaRepository => new PecaRepository(_context);
+
         public async Task<bool> Complete()
         {
             return await _context.SaveChangesAsync() > 0;

@@ -3,6 +3,7 @@ using System;
 using Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace api.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230604033856_RWorkInVendaPeca")]
+    partial class RWorkInVendaPeca
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
@@ -90,52 +93,27 @@ namespace api.Data.Migrations
                     b.ToTable("contatos");
                 });
 
-            modelBuilder.Entity("Api.Entities.ItemPeca", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("IdPeca")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("IdVendaPeca")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("PecaId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("PreUni")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Qnt")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdVendaPeca");
-
-                    b.HasIndex("PecaId");
-
-                    b.ToTable("itemPeca");
-                });
-
             modelBuilder.Entity("Api.Entities.Peca", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Descricao")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("IdVendaPeca")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("NamePeca")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("Qnt")
+                        .HasColumnType("INTEGER");
 
                     b.Property<float>("ValorUnit")
                         .HasColumnType("REAL");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("IdVendaPeca");
 
                     b.ToTable("peca");
                 });
@@ -211,9 +189,6 @@ namespace api.Data.Migrations
                     b.Property<int>("IdCliente")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("IdItemPeca")
-                        .HasColumnType("INTEGER");
-
                     b.Property<float>("ValorTotal")
                         .HasColumnType("REAL");
 
@@ -246,19 +221,13 @@ namespace api.Data.Migrations
                     b.Navigation("ClientApp");
                 });
 
-            modelBuilder.Entity("Api.Entities.ItemPeca", b =>
+            modelBuilder.Entity("Api.Entities.Peca", b =>
                 {
                     b.HasOne("Api.Entities.VendaPeca", "VendaPeca")
-                        .WithMany("ItemPeca")
+                        .WithMany("Peca")
                         .HasForeignKey("IdVendaPeca")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Api.Entities.Peca", "Peca")
-                        .WithMany()
-                        .HasForeignKey("PecaId");
-
-                    b.Navigation("Peca");
 
                     b.Navigation("VendaPeca");
                 });
@@ -300,7 +269,7 @@ namespace api.Data.Migrations
 
             modelBuilder.Entity("Api.Entities.VendaPeca", b =>
                 {
-                    b.Navigation("ItemPeca");
+                    b.Navigation("Peca");
                 });
 #pragma warning restore 612, 618
         }

@@ -9,7 +9,9 @@ namespace api.Extensions
         {
                 services.AddScoped<UserRepository>();
                 services.AddScoped<ClientRepository>();
+                services.AddScoped<VendaPecaRepository>();
                 services.AddScoped<UnitOfWork>();
+                
                 services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 
                 return services;
